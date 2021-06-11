@@ -28,9 +28,11 @@ public class Chunk : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         position = new Vector3i( this.transform.position );
-        if ( Map.instance.chunks.ContainsKey( position ) ) {
+        if ( Map.instance.ChunkExists( position ) ) {
+            Debug.Log( "此方块已存在" + position );
             Destroy( this );
         } else {
+            Map.instance.chunks.Add( position, this.gameObject );
             this.name = "(" + position.x + "," + position.y + "," + position.z + ")";
             StartFuncion();
         }
@@ -52,7 +54,17 @@ public class Chunk : MonoBehaviour
         for ( int x = 0; x < Chunk.width; x++ ) {
             for ( int y = 0; y < Chunk.height; y++ ) {
                 for ( int z = 0; z < Chunk.width; z++ ) {
-                    blocks[x, y, z] = 1;
+                    if ( y == Chunk.height - 1 ) {
+                        if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
+                            blocks[x, y, z] = 2;
+                        }
+                    } else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
+                        if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
+                            blocks[x, y, z] = 2;
+                        }
+                    } else {
+                        blocks[x, y, z] = 1;
+                    }
                 }
             }
         }
@@ -107,9 +119,11 @@ public class Chunk : MonoBehaviour
         _isWorking = false;
     }
 
-    public static bool IsBlockTransparent( int x, int y, int z ) {
+    public bool IsBlockTransparent( int x, int y, int z ) {
         if ( x >= width || y >= height || z >= width || x < 0 || y < 0 || z < 0 ) {
             return true;
+        } else {
+            return blocks[x, y, z] == 0;
         }
         return false;
     }
