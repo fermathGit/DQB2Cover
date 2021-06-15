@@ -17,16 +17,16 @@ public class Map : MonoBehaviour {
         chunkPrefab = Resources.Load( "Prefab/Chunk" ) as GameObject;
     }
 
-    private void Update() {
-        for ( int i = 0; i <= 5; ++i ) {
-            for ( int j = 0; j <= 5; ++j ) {
-                Vector3i pos = new Vector3i( i * Chunk.width, 0, j * Chunk.width );
-                if ( !ChunkExists( pos ) ) {
-                    CreateChunk( pos );
-                }
-            }
-        }
-    }
+    //private void Update() {
+    //    for ( int i = 0; i <= 5; ++i ) {
+    //        for ( int j = 0; j <= 5; ++j ) {
+    //            Vector3i pos = new Vector3i( i * Chunk.width, 0, j * Chunk.width );
+    //            if ( !ChunkExists( pos ) ) {
+    //                CreateChunk( pos );
+    //            }
+    //        }
+    //    }
+    //}
 
     public void CreateChunk( Vector3i pos ) {
         if ( spawningChunk ) return;

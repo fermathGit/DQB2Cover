@@ -10,7 +10,7 @@ using Soultia.Util;
 public class Chunk : MonoBehaviour
 {
     public static int width = 16;
-    public static int height = 15;
+    public static int height = 35;
 
     public byte[,,] blocks;
     public Vector3i position;
