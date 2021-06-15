@@ -10,7 +10,7 @@ using Soultia.Util;
 public class Chunk : MonoBehaviour
 {
     public static int width = 16;
-    public static int height = 16;
+    public static int height = 15;
 
     public byte[,,] blocks;
     public Vector3i position;
@@ -23,7 +23,8 @@ public class Chunk : MonoBehaviour
     public static float textureOffset = 1 / 32f;
     public static float shrinkSize = 0.001f;
 
-    private bool _isWorking = false;
+    public bool IsWorking = false;
+    private bool _isFinished = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -34,11 +35,19 @@ public class Chunk : MonoBehaviour
         } else {
             Map.instance.chunks.Add( position, this.gameObject );
             this.name = "(" + position.x + "," + position.y + "," + position.z + ")";
+            //StartFuncion();
+        }
+    }
+
+    private void Update() {
+        if ( IsWorking == false && _isFinished == false ) {
+            _isFinished = true;
             StartFuncion();
         }
     }
 
     private void StartFuncion() {
+        IsWorking = true;
         _mesh = new Mesh();
         _mesh.name = "Chunk";
 
@@ -46,29 +55,33 @@ public class Chunk : MonoBehaviour
     }
 
     IEnumerator CreateMap() {
-        while ( _isWorking ) {
-            yield return null;
-        }
-        _isWorking = true;
         blocks = new byte[width, height, width];
         for ( int x = 0; x < Chunk.width; x++ ) {
             for ( int y = 0; y < Chunk.height; y++ ) {
                 for ( int z = 0; z < Chunk.width; z++ ) {
-                    if ( y == Chunk.height - 1 ) {
-                        if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
-                            blocks[x, y, z] = 2;
-                        }
-                    } else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
-                        if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
-                            blocks[x, y, z] = 2;
-                        }
+                    //if ( y == Chunk.height - 1 ) {
+                    //    if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
+                    //        blocks[x, y, z] = 2;
+                    //    }
+                    //} else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
+                    //    if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
+                    //        blocks[x, y, z] = 2;
+                    //    }
+                    //} else {
+                    //    blocks[x, y, z] = 1;
+                    //}
+                    byte blockId = Terrain.GetTerrainBlock( new Vector3i( x, y, z ) + position );
+                    byte blockId_up = Terrain.GetTerrainBlock( new Vector3i( x, y + 1, z ) + position );
+                    if ( blockId == 1 && blockId_up == 0 ) {
+                        blocks[x, y, z] = 2;
                     } else {
-                        blocks[x, y, z] = 1;
+                        blocks[x, y, z] = blockId;
                     }
                 }
             }
         }
 
+        yield return null;
         StartCoroutine( CreateMesh() );
     }
 
@@ -116,7 +129,7 @@ public class Chunk : MonoBehaviour
         GetComponent<MeshCollider>().sharedMesh = _mesh;
 
         yield return null;
-        _isWorking = false;
+        IsWorking = false;
     }
 
     public bool IsBlockTransparent( int x, int y, int z ) {
