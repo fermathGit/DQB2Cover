@@ -9,3 +9,6 @@ DQB2太好玩了
 6.15
 
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623811114(1).jpg)
+
+6.16
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623828193(1).jpg)
