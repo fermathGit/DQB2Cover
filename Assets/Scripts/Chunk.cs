@@ -10,7 +10,7 @@ using Soultia.Util;
 public class Chunk : MonoBehaviour
 {
     public static int width = 16;
-    public static int height = 3;
+    public static int height = 50;
 
     public byte[,,] blocks;
     public Vector3i position;
@@ -59,16 +59,12 @@ public class Chunk : MonoBehaviour
         for ( int x = 0; x < Chunk.width; x++ ) {
             for ( int y = 0; y < Chunk.height; y++ ) {
                 for ( int z = 0; z < Chunk.width; z++ ) {
-                    if ( y == Chunk.height - 1 ) {
+                    if ( y == 0 ) {
                         if ( UnityEngine.Random.Range( 1, 1 ) == 1 ) {
                             blocks[x, y, z] = (byte)BlockType.rock;
                         }
-                    } else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
-                        if ( UnityEngine.Random.Range( 1, 1 ) == 1 ) {
-                            blocks[x, y, z] = (byte)BlockType.rock;
-                        }
-                    } else {
-                        blocks[x, y, z] = (byte)BlockType.dirt;
+                    }  else {
+                        blocks[x, y, z] = (byte)BlockType.air;
                     }
                     //byte blockId = Terrain.GetTerrainBlock( new Vector3i( x, y, z ) + position );
                     //byte blockId_up = Terrain.GetTerrainBlock( new Vector3i( x, y + 1, z ) + position );
@@ -146,6 +142,26 @@ public class Chunk : MonoBehaviour
         return false;
     }
 
+    //通过世界坐标获取block的id
+    public byte GetBlock( Vector3i worldPosition ) {
+        int x, y, z;
+        x = worldPosition.x - width * position.x;
+        y = worldPosition.y - height * position.y;
+        z = worldPosition.z - width * position.z;
+
+        return blocks[x, y, z];
+    }
+
+    public void SetBlock( Vector3i worldPosition, byte id ) {
+        int x, y, z;
+        x = worldPosition.x - position.x;
+        y = worldPosition.y -  position.y;
+        z = worldPosition.z -  position.z;
+
+        blocks[x, y, z] = id;
+    }
+
+    float offset = 0.5f;
     private void AddFace_Front( int x, int y, int z, Block block ) {
         //第一个三角面
         triangles.Add( 0 + vertices.Count );
@@ -159,10 +175,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( 0 + x, 0 + y, 0 + z ) );
-        vertices.Add( new Vector3( 0 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( 0 + x, 1 + y, 1 + z ) );
-        vertices.Add( new Vector3( 0 + x, 1 + y, 0 + z ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 0 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureFrontX * textureOffset, block.textureFrontY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
@@ -184,10 +200,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( -1 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( -1 + x, 0 + y, 0 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 0 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 1 + z ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 1 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureBackX * textureOffset, block.textureBackY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
@@ -209,10 +225,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( 0 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( -1 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 1 + z ) );
-        vertices.Add( new Vector3( 0 + x, 1 + y, 1 + z ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 1 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureRightX * textureOffset, block.textureRightY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
@@ -234,10 +250,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( -1 + x, 0 + y, 0 + z ) );
-        vertices.Add( new Vector3( 0 + x, 0 + y, 0 + z ) );
-        vertices.Add( new Vector3( 0 + x, 1 + y, 0 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 0 + z ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 0 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureLeftX * textureOffset, block.textureLeftY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
@@ -259,10 +275,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( 0 + x, 1 + y, 0 + z ) );
-        vertices.Add( new Vector3( 0 + x, 1 + y, 1 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 1 + z ) );
-        vertices.Add( new Vector3( -1 + x, 1 + y, 0 + z ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 1 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 1 + y - offset, 0 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureTopX * textureOffset, block.textureTopY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
@@ -284,10 +300,10 @@ public class Chunk : MonoBehaviour
 
 
         //添加4个点
-        vertices.Add( new Vector3( -1 + x, 0 + y, 0 + z ) );
-        vertices.Add( new Vector3( -1 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( 0 + x, 0 + y, 1 + z ) );
-        vertices.Add( new Vector3( 0 + x, 0 + y, 0 + z ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 0 + z - offset ) );
+        vertices.Add( new Vector3( -1 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 1 + z - offset ) );
+        vertices.Add( new Vector3( 0 + x + offset, 0 + y - offset, 0 + z - offset ) );
 
         //添加UV坐标点，跟上面4个点循环的顺序一致
         uv.Add( new Vector2( block.textureBottomX * textureOffset, block.textureBottomY * textureOffset ) + new Vector2( shrinkSize, shrinkSize ) );
