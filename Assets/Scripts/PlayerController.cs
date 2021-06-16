@@ -28,14 +28,12 @@ public class PlayerController : MonoBehaviour
                 Chunk tc = Map.instance.GetChunk( Vector3i.Floor( pointInTargetBlock ) );
 
                 if ( tc != null ) {
-                    if ( leftClick ) {
-                        for ( int i = 0; i < Chunk.width; ++i ) {
-                            for ( int j = 0; j < Chunk.width; ++j ) {
-                                tc.blocks[i, Chunk.height - 1, j] = (byte)BlockType.grass;
-                            }
+                    for ( int i = 0; i < Chunk.width; ++i ) {
+                        for ( int j = 0; j < Chunk.width; ++j ) {
+                            tc.blocks[i, Chunk.height - 1, j] = (byte)BlockType.grass;
                         }
-                        tc.RebuildMesh();
                     }
+                    tc.RebuildMesh();
                 }
             }
         }
@@ -46,9 +44,9 @@ public class PlayerController : MonoBehaviour
             //for ( float y = transform.position.y - viewRange; y < transform.position.y + viewRange; y += Chunk.height ) {
             //if ( y <= Chunk.height * 1 && y > 0 ) {
             for ( float z = transform.position.z - viewRange; z < transform.position.z + viewRange; z += Chunk.width ) {
-                int xx = Chunk.width * Mathf.CeilToInt( x / Chunk.width );
+                int xx = Chunk.width * Mathf.FloorToInt( x / Chunk.width );
                 int yy = 0;//Chunk.height * Mathf.FloorToInt( y / Chunk.height );
-                int zz = Chunk.width * Mathf.CeilToInt( z / Chunk.width );
+                int zz = Chunk.width * Mathf.FloorToInt( z / Chunk.width );
 
                 if ( !Map.instance.ChunkExists( xx, yy, zz ) ) {
                     Map.instance.CreateChunk( new Vector3i( xx, yy, zz ) );
