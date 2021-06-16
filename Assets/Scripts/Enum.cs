@@ -7,3 +7,11 @@
     Top = 4,
     Bottom = 5
 }
+
+public enum BlockType : byte
+{
+    air = 0,
+    dirt = 1,
+    grass = 2,
+    rock = 3
+}

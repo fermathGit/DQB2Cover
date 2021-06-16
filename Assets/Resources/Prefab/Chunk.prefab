@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1886645183114463389}
   - component: {fileID: 1886645183114463390}
   - component: {fileID: 1886645183114463385}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,6 +50,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
+  IsWorking: 0
 --- !u!23 &1886645183114463389
 MeshRenderer:
   m_ObjectHideFlags: 0

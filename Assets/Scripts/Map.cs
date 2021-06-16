@@ -54,7 +54,7 @@ public class Map : MonoBehaviour {
     //通过世界坐标获取Chunk对象
     public Chunk GetChunk( Vector3i worldPosition ) {
         int xx = Chunk.width * Mathf.FloorToInt( 1.0f * worldPosition.x / Chunk.width );
-        int yy = Chunk.height * Mathf.FloorToInt( 1.0f * worldPosition.y / Chunk.height );
+        int yy = 0; // Chunk.height * Mathf.FloorToInt( 1.0f * worldPosition.y / Chunk.height );
         int zz = Chunk.width * Mathf.FloorToInt( 1.0f * worldPosition.z / Chunk.width );
         if ( Map.instance.chunks.ContainsKey( new Vector3i( xx, yy, zz ) ) ) {
             return Map.instance.chunks[new Vector3i( xx, yy, zz )].GetComponent<Chunk>();

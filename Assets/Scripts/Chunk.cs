@@ -10,7 +10,7 @@ using Soultia.Util;
 public class Chunk : MonoBehaviour
 {
     public static int width = 16;
-    public static int height = 35;
+    public static int height = 3;
 
     public byte[,,] blocks;
     public Vector3i position;
@@ -59,24 +59,24 @@ public class Chunk : MonoBehaviour
         for ( int x = 0; x < Chunk.width; x++ ) {
             for ( int y = 0; y < Chunk.height; y++ ) {
                 for ( int z = 0; z < Chunk.width; z++ ) {
-                    //if ( y == Chunk.height - 1 ) {
-                    //    if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
-                    //        blocks[x, y, z] = 2;
-                    //    }
-                    //} else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
-                    //    if ( UnityEngine.Random.Range( 1, 5 ) == 1 ) {
-                    //        blocks[x, y, z] = 2;
-                    //    }
-                    //} else {
-                    //    blocks[x, y, z] = 1;
-                    //}
-                    byte blockId = Terrain.GetTerrainBlock( new Vector3i( x, y, z ) + position );
-                    byte blockId_up = Terrain.GetTerrainBlock( new Vector3i( x, y + 1, z ) + position );
-                    if ( blockId == 1 && blockId_up == 0 ) {
-                        blocks[x, y, z] = 2;
+                    if ( y == Chunk.height - 1 ) {
+                        if ( UnityEngine.Random.Range( 1, 1 ) == 1 ) {
+                            blocks[x, y, z] = (byte)BlockType.rock;
+                        }
+                    } else if ( x == Chunk.width - 1 || x == 0 || z == Chunk.width - 1 || z == 0 ) {
+                        if ( UnityEngine.Random.Range( 1, 1 ) == 1 ) {
+                            blocks[x, y, z] = (byte)BlockType.rock;
+                        }
                     } else {
-                        blocks[x, y, z] = blockId;
+                        blocks[x, y, z] = (byte)BlockType.dirt;
                     }
+                    //byte blockId = Terrain.GetTerrainBlock( new Vector3i( x, y, z ) + position );
+                    //byte blockId_up = Terrain.GetTerrainBlock( new Vector3i( x, y + 1, z ) + position );
+                    //if ( blockId == 1 && blockId_up == 0 ) {
+                    //    blocks[x, y, z] = 3;
+                    //} else {
+                    //    blocks[x, y, z] = blockId;
+                    //}
                 }
             }
         }
@@ -85,9 +85,14 @@ public class Chunk : MonoBehaviour
         StartCoroutine( CreateMesh() );
     }
 
+    public void RebuildMesh() {
+        StartCoroutine( CreateMesh() );
+    }
+
     IEnumerator CreateMesh() {
         vertices.Clear();
         triangles.Clear();
+        uv.Clear();
         //把所有面的点和面的索引添加进去
         for ( int x = 0; x < Chunk.width; x++ ) {
             for ( int y = 0; y < Chunk.height; y++ ) {
@@ -136,7 +141,7 @@ public class Chunk : MonoBehaviour
         if ( x >= width || y >= height || z >= width || x < 0 || y < 0 || z < 0 ) {
             return true;
         } else {
-            return blocks[x, y, z] == 0;
+            return blocks[x, y, z] == (byte)BlockType.air;
         }
         return false;
     }
