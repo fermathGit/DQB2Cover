@@ -11,4 +11,9 @@ DQB2太好玩了
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623811114(1).jpg)
 
 6.16
+
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623828193(1).jpg)
+
+6.17 可以在自己周围建立砖块
+
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623847100(1).jpg)
