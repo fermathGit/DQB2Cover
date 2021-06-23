@@ -25,3 +25,7 @@ DQB2太好玩了
 生成敌人，根据路径移动到目标点
 
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1624442039(1).jpg)
+
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/7.gif)
+
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/8.gif)
