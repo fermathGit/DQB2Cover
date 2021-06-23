@@ -43,11 +43,11 @@ public class PlayerController : MonoBehaviour
         if ( leftClick ) {
             Vector3i pos = GetCreatePos();
 
-            Chunk tc = Map.instance.GetChunk( pos );
-            if ( tc != null ) {
-                tc.SetBlock( pos, (byte)BlockType.dirt );
-                tc.RebuildMesh();
-            }
+            //Chunk tc = Map.instance.GetChunk( pos );
+            //if ( tc != null ) {
+            //    tc.SetBlock( pos, (byte)BlockType.dirt );
+            //    tc.RebuildMesh();
+            //}
         }
 
         _createGo.transform.position = GetCreatePos();
