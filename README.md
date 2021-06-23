@@ -17,3 +17,8 @@ DQB2太好玩了
 6.17 可以在自己周围建立砖块
 
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1623847100(1).jpg)
+
+6.23 新增路径计算，创建砖块，影响路径
+
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1624416964(1).jpg)
+
