@@ -20,6 +20,8 @@ public class GameBoard : MonoBehaviour
 
     List<GameTile> spawnPoints = new List<GameTile>();
 
+    public int SpawnPointCount => spawnPoints.Count;
+
     List<GameTileContent> updatingContent = new List<GameTileContent>();
 
     GameTileContentFactory contentFactory;
@@ -156,7 +158,8 @@ public class GameBoard : MonoBehaviour
         }
         spawnPoints.Clear();
         updatingContent.Clear();
-        ToggleDestination( tiles[tiles.Length / 2] );
+        ToggleDestination( tiles[tiles.Length / 2] ); 
+        ToggleSpawnPoint( tiles[0] );
     }
 
     public void ToggleDestination( GameTile tile ) {
@@ -183,6 +186,18 @@ public class GameBoard : MonoBehaviour
                 tile.Content = contentFactory.Get( GameTileContentType.Empty );
                 FindPaths();
             }
+        }
+    }
+
+    public void ToggleSpawnPoint( GameTile tile ) {
+        if ( tile.Content.Type == GameTileContentType.SpawnPoint ) {
+            if ( spawnPoints.Count > 1 ) {
+                spawnPoints.Remove( tile );
+                tile.Content = contentFactory.Get( GameTileContentType.Empty );
+            }
+        } else if ( tile.Content.Type == GameTileContentType.Empty ) {
+            tile.Content = contentFactory.Get( GameTileContentType.SpawnPoint );
+            spawnPoints.Add( tile );
         }
     }
 

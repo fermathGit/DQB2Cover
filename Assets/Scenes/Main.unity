@@ -458,6 +458,8 @@ MonoBehaviour:
   tileContentFactory: {fileID: 11400000, guid: b472fc8f2905ffc4681370b20ed4770c, type: 2}
   startingPlayerHealth: 10
   playSpeed: 1
+  enemyFactory: {fileID: 11400000, guid: 8cd86ca17e4c15645bbb6cebc3a17734, type: 2}
+  spawnSpeed: 1
 --- !u!1 &1584707067
 GameObject:
   m_ObjectHideFlags: 0

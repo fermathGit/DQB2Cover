@@ -11,6 +11,8 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameTileContentFactory tileContentFactory = default;
 
+    GameBehavierCollection enemies = new GameBehavierCollection();
+
     Ray TouchRay => Camera.main.ScreenPointToRay( Input.mousePosition );
 
     [SerializeField, Range( 0, 100 )]
@@ -24,6 +26,12 @@ public class Game : MonoBehaviour
     float playSpeed = 1f;
 
     static Game instance;
+
+    [SerializeField] EnemyFactory enemyFactory = default;
+
+    [SerializeField, Range( 0.1f, 10f )] float spawnSpeed = 1f;
+
+    float spawnProgress;
 
     private void Awake() {
         playerHealth = startingPlayerHealth;
@@ -62,12 +70,25 @@ public class Game : MonoBehaviour
             Time.timeScale = playSpeed;
         }
 
+        if ( Input.GetKeyDown( KeyCode.B ) ) {
+            BeginNewGame();
+        }
+
+        enemies.GameUpdate();
         board.GameUpdate();
+
+        spawnProgress += spawnSpeed * Time.deltaTime;
+        while ( spawnProgress >= 3f ) {
+            spawnProgress -= 3f;
+            SpawnEnemy();
+        }
     }
 
     void BeginNewGame() {
         playerHealth = startingPlayerHealth;
+        enemies.Clear();
         board.Clear();
+        //activeScenario = scenario.Begin();
     }
 
     void HandleTouch() {
@@ -86,8 +107,16 @@ public class Game : MonoBehaviour
         if ( tile != null ) {
             if ( Input.GetKey( KeyCode.LeftShift ) )
                 board.ToggleDestination( tile );
-
+            else
+                board.ToggleSpawnPoint( tile );
         }
+    }
+
+    public void SpawnEnemy( ) {
+        GameTile spawnPoint = instance.board.GetSpawnPoint( Random.Range( 0, instance.board.SpawnPointCount ) );
+        Enemy enemy = enemyFactory.Get( EnemyType.Large );
+        enemy.SpawnOn( spawnPoint );
+        instance.enemies.Add( enemy );
     }
 
 }
