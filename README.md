@@ -22,3 +22,6 @@ DQB2太好玩了
 
 ![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1624416964(1).jpg)
 
+生成敌人，根据路径移动到目标点
+
+![image](https://github.com/fermathGit/DQB2Cover/blob/master/Assets/Screenshot/1624442039(1).jpg)
